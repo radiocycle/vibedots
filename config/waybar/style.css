@@ -1,0 +1,169 @@
+@import "colors.css";
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+    font-size: 15px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background-color: alpha(@background, 0.88);
+    color: @on_surface;
+    transition-duration: 0.3s;
+}
+
+window#waybar.hidden {
+    opacity: 0.1;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+    padding: 0 8px;
+}
+
+/* ── Workspaces ─────────────────────────────── */
+
+#workspaces {
+    margin: 4px 4px 4px 0;
+    padding: 0;
+}
+
+#workspaces button {
+    padding: 2px 10px;
+    margin: 0 2px;
+    color: @on_surface_var;
+    background: transparent;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    background: alpha(@primary, 0.15);
+    color: @primary;
+}
+
+#workspaces button.active {
+    background: alpha(@primary, 0.25);
+    color: @primary;
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    background: alpha(@error, 0.3);
+    color: @error;
+}
+
+/* ── Window title ───────────────────────────── */
+
+#window {
+    padding: 0 8px;
+    color: @on_surface_var;
+    font-style: italic;
+}
+
+/* ── Player ─────────────────────────────────── */
+
+#custom-playerctl {
+    padding: 0 14px;
+    color: @primary;
+    font-style: italic;
+}
+
+/* ── Clock ──────────────────────────────────── */
+
+#clock {
+    padding: 0 12px;
+    color: @on_surface;
+    font-weight: bold;
+}
+
+/* ── Right modules shared ───────────────────── */
+
+#pulseaudio,
+#backlight,
+#battery,
+#network,
+#power-profiles-daemon,
+#language,
+#tray {
+    padding: 0 10px;
+    margin: 4px 2px;
+    border-radius: 6px;
+    background: alpha(@surface, 0.6);
+    color: @on_surface;
+}
+
+/* ── Volume ─────────────────────────────────── */
+
+#pulseaudio {
+    color: @secondary;
+}
+
+#pulseaudio.muted {
+    color: @on_surface_var;
+}
+
+/* ── Backlight ──────────────────────────────── */
+
+#backlight {
+    color: @primary;
+}
+
+/* ── Battery ────────────────────────────────── */
+
+#battery {
+    color: @tertiary;
+}
+
+#battery.charging {
+    color: @tertiary;
+}
+
+#battery.warning:not(.charging) {
+    color: @secondary;
+}
+
+#battery.critical:not(.charging) {
+    color: @error;
+    animation: blink 0.5s steps(1) infinite;
+}
+
+@keyframes blink {
+    to { color: transparent; }
+}
+
+/* ── Network ────────────────────────────────── */
+
+#network {
+    color: @tertiary;
+}
+
+#network.disconnected {
+    color: @on_surface_var;
+}
+
+/* ── Language ───────────────────────────────── */
+
+#language {
+    color: @primary;
+    font-weight: bold;
+    min-width: 32px;
+}
+
+/* ── Tray ───────────────────────────────────── */
+
+#tray {
+    background: transparent;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: alpha(@error, 0.3);
+}

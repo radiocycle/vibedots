@@ -1,0 +1,17 @@
+window.color={{colors.surface.default.hex_stripped}}
+window.color.light={{colors.surface_container.default.hex_stripped}}
+window.color.dark={{colors.surface_container_lowest.default.hex_stripped}}
+base.color={{colors.surface_container_low.default.hex_stripped}}
+alt.base.color={{colors.surface_container.default.hex_stripped}}
+button.color={{colors.surface_container_high.default.hex_stripped}}
+text.color={{colors.on_surface.default.hex_stripped}}
+window.text.color={{colors.on_surface.default.hex_stripped}}
+base.text.color={{colors.on_surface.default.hex_stripped}}
+button.text.color={{colors.on_surface.default.hex_stripped}}
+disabled.text.color={{colors.outline.default.hex_stripped}}
+highlight.color={{colors.primary.default.hex_stripped}}
+highlighted.text.color={{colors.on_primary.default.hex_stripped}}
+link.color={{colors.tertiary.default.hex_stripped}}
+link.visited.color={{colors.secondary.default.hex_stripped}}
+tooltip.base.color={{colors.surface_container_high.default.hex_stripped}}
+tooltip.text.color={{colors.on_surface.default.hex_stripped}}

@@ -1,0 +1,51 @@
+[config]
+reload_apps = false
+set_wallpaper = false
+
+[templates.fastfetch]
+input_path = "~/.config/matugen/templates/fastfetch/config.jsonc"
+output_path = "~/.config/fastfetch/config.jsonc"
+
+[templates.kitty]
+input_path = "~/.config/matugen/templates/kitty/colors.conf"
+output_path = "~/.config/kitty/colors.conf"
+
+[templates.waybar]
+input_path = "~/.config/matugen/templates/waybar/colors.css"
+output_path = "~/.config/waybar/colors.css"
+
+[templates.mako]
+input_path = "~/.config/matugen/templates/mako/config"
+output_path = "~/.config/mako/config"
+
+[templates.fuzzel]
+input_path = "~/.config/matugen/templates/fuzzel/fuzzel.ini"
+output_path = "~/.config/fuzzel/fuzzel.ini"
+
+[templates.hyprland]
+input_path = "~/.config/matugen/templates/hyprland/colors.conf"
+output_path = "~/.config/hypr/colors.conf"
+
+[templates.gtk4]
+input_path = "~/.config/matugen/templates/gtk/gtk.css"
+output_path = "~/.config/gtk-4.0/gtk.css"
+
+[templates.gtk3]
+input_path = "~/.config/matugen/templates/gtk/gtk.css"
+output_path = "~/.config/gtk-3.0/gtk.css"
+
+[templates.spicetify]
+input_path = "~/.config/matugen/templates/spicetify/color.ini"
+output_path = "~/.config/spicetify/Themes/caelestia/color.ini"
+
+[templates.foot]
+input_path = "~/.config/matugen/templates/foot/colors"
+output_path = "~/.config/foot/colors"
+
+[templates.quickshell]
+input_path = "~/.config/matugen/templates/quickshell/colors.js"
+output_path = "~/.config/quickshell/colors.js"
+
+[templates.qtengine]
+input_path = "~/.config/matugen/templates/qtengine/colors"
+output_path = "~/.config/qtengine/colors"

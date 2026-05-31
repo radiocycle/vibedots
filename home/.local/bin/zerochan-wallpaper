@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+"""
+Random wallpaper fetcher from Zerochan.
+Games: ZZZ, Genshin, HSR, Arknights, Arknights:Endfield, NtE.
+Filters: 16:9 or 16:10, ≥2 MB, ID ≥ 4 540 000 (≈ July 2025).
+"""
+
+import json
+import os
+import random
+import re
+import sys
+
+SAVE_DIR = os.path.expanduser("~/Pictures/Wallpapers")
+MIN_SIZE = 2 * 1024 * 1024  # 2 MB
+MIN_ID   = 4_540_000        # ≈ July 2025
+MAX_TRIES = 15
+PAGE_SIZE = 50
+MAX_PAGE  = 80              # per-game page limit
+
+GAMES = [
+    ("Zenless Zone Zero",       "Zenless+Zone+Zero"),
+    ("Genshin Impact",          "Genshin+Impact"),
+    ("Honkai: Star Rail",       "Honkai+Star+Rail"),
+    ("Arknights",               "Arknights"),
+    ("Arknights: Endfield",     "Arknights%3A+Endfield"),
+    ("Neverness to Everness",   "Neverness+to+Everness"),
+]
+
+RATIOS = [(16, 9), (16, 10)]
+
+def valid_ratio(w, h):
+    for rw, rh in RATIOS:
+        if abs(w / h - rw / rh) < 0.04:
+            return True
+    return False
+
+def notify(title, msg, icon="image"):
+    os.system(f'notify-send -i {icon} "{title}" "{msg}" 2>/dev/null')
+
+def main():
+    from playwright.sync_api import sync_playwright
+
+    os.makedirs(SAVE_DIR, exist_ok=True)
+    notify("Wallpaper", "Searching Zerochan…", "emblem-downloads")
+    print("Searching Zerochan…")
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        ctx = browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (X11; Linux x86_64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/124.0.0.0 Safari/537.36"
+            )
+        )
+        page = ctx.new_page()
+
+        # Warm up with retry
+        for _try in range(3):
+            try:
+                page.goto("https://www.zerochan.net/",
+                          wait_until="domcontentloaded", timeout=30000)
+                break
+            except Exception as e:
+                print(f"  Warmup attempt {_try+1} failed: {e}")
+                if _try == 2:
+                    notify("Wallpaper", "Cannot reach Zerochan", "dialog-error")
+                    browser.close()
+                    return 1
+
+        for attempt in range(1, MAX_TRIES + 1):
+            game_name, game_tag = random.choice(GAMES)
+            pg_num = random.randint(1, MAX_PAGE)
+            url = (
+                f"https://www.zerochan.net/{game_tag}"
+                f"?json&l={PAGE_SIZE}&p={pg_num}&s=id&d=desc"
+            )
+            print(f"  Attempt {attempt}/{MAX_TRIES} — {game_name} p{pg_num}")
+
+            try:
+                page.goto(url, wait_until="domcontentloaded", timeout=25000)
+            except Exception:
+                continue
+
+            text = page.inner_text("body")
+            try:
+                data = json.loads(text)
+            except Exception:
+                continue
+
+            items = [
+                it for it in data.get("items", [])
+                if it["id"] >= MIN_ID and valid_ratio(it["width"], it["height"])
+            ]
+            if not items:
+                continue
+
+            random.shuffle(items)
+
+            for item in items:
+                try:
+                    page.goto(
+                        f"https://www.zerochan.net/{item['id']}?json",
+                        wait_until="domcontentloaded", timeout=20000,
+                    )
+                except Exception:
+                    continue
+
+                detail_text = page.inner_text("body")
+                try:
+                    detail = json.loads(detail_text)
+                except Exception:
+                    continue
+
+                if detail.get("size", 0) < MIN_SIZE:
+                    continue
+
+                full_url = detail.get("full")
+                if not full_url:
+                    continue
+
+                ext   = full_url.rsplit(".", 1)[-1].split("?")[0]
+                name  = f"zerochan_{item['id']}.{ext}"
+                path  = os.path.join(SAVE_DIR, name)
+                mb    = detail["size"] / 1024 / 1024
+                ratio = f"{item['width']}x{item['height']}"
+                tag   = detail.get("primary", "")
+
+                print(f"  ✓ [{game_name}] {tag} | {ratio} | {mb:.1f} MB")
+
+                try:
+                    resp = page.goto(full_url, wait_until="load", timeout=60000)
+                    data_bytes = resp.body()
+                except Exception as e:
+                    print(f"    Download failed: {e}")
+                    continue
+
+                with open(path, "wb") as f:
+                    f.write(data_bytes)
+                print(f"    Saved → {path}")
+
+                browser.close()
+
+                if os.system(f'awww img "{path}" --transition-type fade 2>/dev/null') == 0:
+                    cfg = os.path.expanduser("~/.config/waypaper/config.ini")
+                    if os.path.exists(cfg):
+                        txt = open(cfg).read()
+                        txt = re.sub(r'^wallpaper = .*', f'wallpaper = {path}', txt, flags=re.M)
+                        open(cfg, "w").write(txt)
+                    script = os.path.expanduser("~/.config/hypr/scripts/apply-theme.sh")
+                    if os.path.exists(script):
+                        os.system(f'bash "{script}"')
+
+                notify(
+                    f"{game_name}",
+                    f"{tag}\\n{ratio} · {mb:.1f} MB",
+                    "image"
+                )
+                return 0
+
+        browser.close()
+
+    print("✗ No match found.")
+    notify("Wallpaper", "No matching wallpaper found — try again", "dialog-warning")
+    return 1
+
+if __name__ == "__main__":
+    sys.exit(main())

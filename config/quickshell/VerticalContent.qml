@@ -3,6 +3,7 @@ import "."
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import Quickshell.Services.Pipewire
+import Quickshell.Services.SystemTray
 import Quickshell.Bluetooth
 import QtQuick
 import QtQuick.Layouts
@@ -85,6 +86,40 @@ Item {
     ColumnLayout {
         anchors { bottom: parent.bottom; bottomMargin: 8; horizontalCenter: parent.horizontalCenter }
         spacing: 8
+
+        // Tray
+        Repeater {
+            model: SystemTray.items.values
+            delegate: Item {
+                id: vTrayItem
+                required property SystemTrayItem modelData
+                Layout.alignment: Qt.AlignHCenter; width: 24; height: 24
+                Image {
+                    anchors.centerIn: parent; width: 18; height: 18
+                    source: vTrayItem.modelData.icon; smooth: true; mipmap: true
+                }
+                QsMenuAnchor {
+                    id: vTrayMenu; menu: vTrayItem.modelData.menu; anchor.item: vTrayItem
+                    anchor.gravity: Edges.Right; anchor.edges: Edges.Right
+                    anchor.adjustment: PopupAdjustment.SlideY
+                }
+                MouseArea {
+                    anchors.fill: parent; acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: ev => {
+                        if (ev.button === Qt.LeftButton) vTrayItem.modelData.activate()
+                        else if (vTrayItem.modelData.hasMenu) vTrayMenu.open()
+                    }
+                }
+            }
+        }
+
+        // Разделитель (только если есть иконки в трее)
+        Rectangle {
+            visible: SystemTray.items.values.length > 0
+            Layout.alignment: Qt.AlignHCenter
+            width: 20; height: 1
+            color: Qt.rgba(Config.cPrimary.r, Config.cPrimary.g, Config.cPrimary.b, 0.20)
+        }
 
         Item {
             Layout.alignment: Qt.AlignHCenter; width: 24; height: 24

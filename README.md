@@ -30,6 +30,7 @@
 ## Install
 
 ```bash
+git clone https://github.com/radiocycle/vibedots ~/dotfiles
 cd ~/dotfiles
 bash install.sh                    # interactive — confirm each step
 bash install.sh --auto             # automatic — no prompts

@@ -29,6 +29,12 @@
 
 ## Install
 
+**One-liner:**
+```bash
+bash <(curl -s https://raw.githubusercontent.com/radiocycle/vibedots/main/install.sh)
+```
+
+Or clone first:
 ```bash
 git clone https://github.com/radiocycle/vibedots ~/dotfiles
 cd ~/dotfiles
@@ -39,6 +45,33 @@ bash install.sh --auto --bar=qs    # auto with quickshell as default
 ```
 
 Both bars are always installed. Toggle between them at any time with **`Super+Shift+B`**.
+
+---
+
+## Update
+
+Pull latest changes and redeploy configs:
+
+```bash
+cd ~/dotfiles && bash update.sh
+bash update.sh --no-packages   # skip yay -Syu
+bash update.sh --auto          # no prompts
+```
+
+Or one-liner:
+```bash
+bash <(curl -s https://raw.githubusercontent.com/radiocycle/vibedots/main/update.sh)
+```
+
+---
+
+## Uninstall
+
+Removes deployed configs and optionally restores backup. **Packages are not removed.**
+
+```bash
+cd ~/dotfiles && bash uninstall.sh
+```
 
 ---
 

@@ -29,7 +29,13 @@ ask() {
     [[ "${answer,,}" == "y" ]]
 }
 
-DOTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# При запуске через bash <(curl ...) BASH_SOURCE[0] = /dev/fd/N — фолбэк на ~/dotfiles
+_src="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ "$_src" == "/dev/fd" ]] || [[ ! -d "$_src/.git" ]]; then
+    DOTS_DIR="$HOME/dotfiles"
+else
+    DOTS_DIR="$_src"
+fi
 
 # ── Banner ────────────────────────────────────────────────────────
 clear

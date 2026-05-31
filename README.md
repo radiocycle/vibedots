@@ -155,6 +155,7 @@ cd ~/dotfiles && bash uninstall.sh
 |---------|--------|
 | `Super + Shift + C` | Color picker (hex → clipboard) |
 | `Super + Shift + B` | Toggle bar (Quickshell ↔ Waybar) |
+| `Super + S` | Bar settings (position, opacity, rounding) |
 | `Super + L` | Lock screen (switches to EN layout) |
 | `Super + Shift + L` | Session menu |
 | `Ctrl + Alt + Delete` | Session menu |
@@ -217,10 +218,23 @@ dotfiles/
 │   │   ├── conf/           autostart, binds, env, input, look, rules
 │   │   └── scripts/        apply-theme.sh, gen-kitty-colors.py
 │   ├── quickshell/
-│   │   ├── shell.qml
-│   │   ├── WifiPopup.qml
-│   │   ├── BluetoothPopup.qml
-│   │   └── icons/          Fluent SVG icons
+│   │   ├── shell.qml           entry point (ShellRoot)
+│   │   ├── Config.qml          singleton — settings, colors, state, processes
+│   │   ├── Bar.qml             bar PanelWindow
+│   │   ├── HorizontalContent.qml  horizontal bar layout (workspaces, pills)
+│   │   ├── VerticalContent.qml    vertical bar layout (left/right position)
+│   │   ├── ClockOverlay.qml    centered clock pill (horizontal)
+│   │   ├── Pill.qml            reusable status pill component
+│   │   ├── Settings.qml        bar settings popup (Super+S)
+│   │   ├── WifiPopup.qml       Wi-Fi network list popup
+│   │   ├── BluetoothPopup.qml  Bluetooth device list popup
+│   │   ├── PlayerPopup.qml     media player popup
+│   │   ├── OsdPopup.qml        volume / brightness OSD
+│   │   ├── CornerCap.qml       outer rounded corner caps
+│   │   ├── BarCorner.qml       quarter-circle shape component
+│   │   ├── BatteryTooltip.qml  battery hover tooltip
+│   │   ├── VerticalTooltip.qml icon hover tooltip (vertical bar)
+│   │   └── icons/              Fluent SVG icons
 │   ├── matugen/
 │   │   ├── config.toml
 │   │   └── templates/      per-app color templates

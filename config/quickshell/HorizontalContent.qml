@@ -37,22 +37,17 @@ RowLayout {
                     }
                     property bool focused:  ws ? ws.focused : false
                     property bool occupied: ws ? ws.clientCount > 0 : false
-                    property string activeAppId: Config.wsApps[modelData] || (focused ? (ToplevelManager.activeToplevel?.appId ?? "") : "")
                     implicitWidth: wsRect.width + 2; implicitHeight: Config.barThickness
                     Rectangle {
                         id: wsRect
                         anchors.verticalCenter: parent.verticalCenter
-                        width: activeAppId ? (focused ? 34 : 28) : focused ? 30 : occupied ? 22 : 18; height: 24; radius: 6
+                        width: focused ? 30 : occupied ? 22 : 18; height: 24; radius: 6
                         color: focused ? Qt.rgba(Config.cPrimary.r, Config.cPrimary.g, Config.cPrimary.b, 0.18)
                                : occupied ? Qt.rgba(Config.cPrimary.r, Config.cPrimary.g, Config.cPrimary.b, 0.07) : "transparent"
                         border.color: Qt.rgba(Config.cPrimary.r, Config.cPrimary.g, Config.cPrimary.b, focused ? 0.50 : 0.16); border.width: 1
                         Behavior on width { NumberAnimation { duration: 150 } }
-                        Image {
-                            anchors.centerIn: parent; width: 18; height: 18; visible: activeAppId !== ""
-                            source: activeAppId ? "image://icon/" + activeAppId : ""; smooth: true; mipmap: true; fillMode: Image.PreserveAspectFit
-                        }
                         Text {
-                            anchors.centerIn: parent; visible: activeAppId === ""; text: modelData
+                            anchors.centerIn: parent; visible: true; text: modelData
                             font.family: "JetBrainsMono Nerd Font Mono"; font.pixelSize: 14; font.bold: focused
                             color: focused ? Config.cPrimary : occupied ? Config.cOnSurfaceVar : Qt.rgba(Config.cOnSurfaceVar.r, Config.cOnSurfaceVar.g, Config.cOnSurfaceVar.b, 0.45)
                         }

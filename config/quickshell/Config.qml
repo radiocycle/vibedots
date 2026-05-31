@@ -67,15 +67,6 @@ Singleton {
     function hidePlayer() { _plHide.restart()                          }
     Timer { id: _plHide; interval: 250; onTriggered: root.playerPopupShow = false }
 
-    // ── Workspace → app icon map (IPC events) ────────────────────
-    property var wsApps: ({})
-    function setWsApp(wsId, appClass) {
-        if (!appClass) return
-        var m = Object.assign({}, wsApps)
-        m[wsId] = appClass
-        wsApps = m
-    }
-
     // ── OSD ───────────────────────────────────────────────────────
     signal osdRequested(string icon)
 

@@ -33,9 +33,9 @@ Item {
                 }
                 property bool focused:  ws ? ws.focused : false
                 property bool occupied: ws ? ws.clientCount > 0 : false
-                property string activeAppId: Config.wsApps[modelData] || (focused ? (ToplevelManager.activeToplevel?.appId ?? "") : "")
+                property string activeAppId: occupied ? (Config.wsApps[modelData] || (focused ? (ToplevelManager.activeToplevel?.appId ?? "") : "")) : ""
                 Layout.alignment: Qt.AlignHCenter
-                implicitWidth:  activeAppId ? (focused ? 36 : 28) : focused ? 32 : occupied ? 26 : 22
+                implicitWidth:  focused ? 32 : occupied ? 26 : 22
                 implicitHeight: implicitWidth
                 Rectangle {
                     anchors.fill: parent; radius: 6

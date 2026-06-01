@@ -23,7 +23,7 @@
 | Cursor | Bibata Modern Classic |
 | Icons | Papirus-Dark |
 | GTK theme | adw-gtk3-dark |
-| Qt theme | Breeze |
+| Qt theme | qtengine (matugen-generated) |
 
 ---
 

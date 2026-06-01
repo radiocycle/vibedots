@@ -406,8 +406,6 @@ if [[ -d "$DOTS_DIR/config/spicetify-theme" ]] && command -v spicetify &>/dev/nu
     fi
 fi
 
-    fi
-
 # ── Summary ───────────────────────────────────────────────────────
 echo
 echo -e "${BOLD}${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"

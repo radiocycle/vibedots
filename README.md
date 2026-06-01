@@ -1,6 +1,6 @@
 # dotfiles
 
-**Arch Linux** · Hyprland · Quickshell / Waybar · matugen · foot · fuzzel
+**Arch Linux** · Hyprland · Waybar · matugen · foot · fuzzel
 
 ---
 
@@ -9,7 +9,7 @@
 | Component | Tool |
 |-----------|------|
 | Compositor | [Hyprland](https://hyprland.org) |
-| Bar | [Quickshell](https://quickshell.outfoxxed.me) **or** [Waybar](https://github.com/Alexays/Waybar) (toggle with `Super+Shift+B`) |
+| Bar | [Waybar](https://github.com/Alexays/Waybar) |
 | Terminal | [foot](https://codeberg.org/dnkl/foot) |
 | Shell | zsh + Oh My Zsh + starship |
 | Launcher | [fuzzel](https://codeberg.org/dnkl/fuzzel) |
@@ -23,7 +23,7 @@
 | Cursor | Bibata Modern Classic |
 | Icons | Papirus-Dark |
 | GTK theme | adw-gtk3-dark |
-| Qt theme | Kvantum + Breeze |
+| Qt theme | Breeze |
 
 ---
 
@@ -38,19 +38,13 @@ Or clone first:
 ```bash
 git clone https://github.com/radiocycle/vibedots ~/dotfiles
 cd ~/dotfiles
-bash install.sh                    # interactive — confirm each step
-bash install.sh --auto             # automatic — no prompts
-bash install.sh --bar=waybar       # set waybar as default bar
-bash install.sh --auto --bar=qs    # auto with quickshell as default
+bash install.sh          # interactive — confirm each step
+bash install.sh --auto   # automatic — no prompts
 ```
-
-Both bars are always installed. Toggle between them at any time with **`Super+Shift+B`**.
 
 ---
 
 ## Update
-
-Pull latest changes and redeploy configs:
 
 ```bash
 cd ~/dotfiles && bash update.sh
@@ -58,9 +52,9 @@ bash update.sh --no-packages   # skip yay -Syu
 bash update.sh --auto          # no prompts
 ```
 
-Or one-liner:
+One-liner:
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/radiocycle/vibedots/main/update.sh)
+bash <(curl -s https://raw.githubusercontent.com/radiocycle/vibedots/main/update.sh) --no-packages
 ```
 
 ---
@@ -75,9 +69,49 @@ cd ~/dotfiles && bash uninstall.sh
 
 ---
 
+## Config (`~/.config/vibedots/shell.json`)
+
+Central config for bar and Hyprland appearance. Apply with `Super+Shift+R` or:
+
+```bash
+bash ~/.config/vibedots/apply.sh
+```
+
+```json
+{
+  "bar": {
+    "opacity": 0.85,
+    "height": 44,
+    "pills": true
+  },
+  "hyprland": {
+    "window_opacity": 0.92,
+    "window_rounding": 8,
+    "blur": true,
+    "blur_size": 8,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `bar.opacity` | Bar background opacity (0.0–1.0) |
+| `bar.height` | Bar height in px |
+| `bar.pills` | Show/hide pill backgrounds on modules |
+| `hyprland.window_opacity` | Active window opacity |
+| `hyprland.window_rounding` | Window corner radius in px |
+| `hyprland.blur` | Enable window blur |
+| `hyprland.blur_size` | Blur kernel size |
+| `hyprland.blur_passes` | Blur quality passes |
+| `hyprland.blur_vibrancy` | Blur color vibrancy |
+
+---
+
 ## Keybinds
 
-> `Super` = Win key · `$mainMod` = Super
+> `Super` = Win key
 
 ### Applications
 
@@ -86,7 +120,7 @@ cd ~/dotfiles && bash uninstall.sh
 | `Super` (tap) | App launcher (fuzzel) |
 | `Super + Space` | App launcher (fuzzel) |
 | `Super + T` | Terminal (foot) |
-| `Super + E` | File manager (Dolphin) |
+| `Super + E` | File manager |
 | `Super + W` | Zen Browser |
 | `Super + Shift + W` | Wallpaper picker (waypaper) |
 | `Super + R` | Random wallpaper from Zerochan |
@@ -102,15 +136,7 @@ cd ~/dotfiles && bash uninstall.sh
 | `Super + V` | Clipboard history |
 | `Super + LMB drag` | Move floating window |
 | `Super + RMB drag` | Resize window |
-
-### Window movement
-
-| Keybind | Action |
-|---------|--------|
-| `Super + Alt + ←` | Move window left |
-| `Super + Alt + →` | Move window right |
-| `Super + Alt + ↑` | Move window up |
-| `Super + Alt + ↓` | Move window down |
+| `Super + Alt + ←↑↓→` | Move window |
 
 ### Workspaces
 
@@ -131,77 +157,57 @@ cd ~/dotfiles && bash uninstall.sh
 | `XF86AudioRaiseVolume` | Volume +5% |
 | `XF86AudioLowerVolume` | Volume −5% |
 | `XF86AudioMute` | Mute toggle |
-| `XF86AudioMicMute` | Mic mute toggle |
-
-### Brightness
-
-| Keybind | Action |
-|---------|--------|
-| `Super + ]` | Brightness +5% |
-| `Super + [` | Brightness −5% |
-| `XF86MonBrightnessUp/Down` | Brightness keys |
+| `Super + ]` / `XF86MonBrightnessUp` | Brightness +5% |
+| `Super + [` / `XF86MonBrightnessDown` | Brightness −5% |
 
 ### Screenshots
 
 | Keybind | Action |
 |---------|--------|
-| `Print` | Fullscreen → clipboard |
-| `Ctrl + F12` | Fullscreen → clipboard |
+| `Print` / `Ctrl + F12` | Fullscreen → clipboard |
 | `Super + Shift + S` | Region select → clipboard |
 
 ### Utilities
 
 | Keybind | Action |
 |---------|--------|
+| `Super + Shift + R` | Apply `~/.config/vibedots/shell.json` |
+| `Super + Shift + B` | Restart Waybar |
 | `Super + Shift + C` | Color picker (hex → clipboard) |
-| `Super + Shift + B` | Toggle bar (Quickshell ↔ Waybar) |
-| `Super + S` | Bar settings (position, opacity, rounding) |
-| `Super + L` | Lock screen (switches to EN layout) |
-| `Super + Shift + L` | Session menu |
+| `Super + L` | Lock screen |
+| `Super + Shift + L` | Session menu (wlogout) |
 | `Ctrl + Alt + Delete` | Session menu |
 
-### Keyboard layout
-
-`Alt + Shift` — toggle EN ↔ RU.
+`Alt + Shift` — toggle EN ↔ RU keyboard layout.
 
 ---
 
-## Bar modules
+## Bar
 
-**Left:** Workspaces (1–5 fixed + dynamic) · Player (hover for popup)
+**Left:** Workspaces · Window title
 
 **Center:** Clock + date
 
-**Right:** Volume · Brightness · Battery · Power profile · Wi-Fi · Bluetooth · Tray · Layout
+**Right:** Player · Volume · Brightness · Battery · Network · Power profile · Tray · Layout
 
-- **Wi-Fi** — click to open network list, connect/disconnect, password prompt for new networks
-- **Bluetooth** — click to open device list, power toggle, scan, connect/disconnect
-- **Power profile** — click to cycle: balanced → power-saver → performance
-- **Battery** — reads from `/sys` directly, hover for time remaining
+When `pills: false` in shell.json — module backgrounds are removed and separators (`│`) appear between groups.
 
 ---
 
 ## Color scheme
 
-Colors are generated by **matugen** from the wallpaper (Material You).
+Colors generated by **matugen** from the wallpaper (Material You). Changing wallpaper via waypaper auto-applies colors to: bar, terminal, fuzzel, mako, hyprlock, wlogout, GTK, fastfetch.
 
-Changing wallpaper via waypaper auto-applies colors to:
-bar, terminal, fuzzel, mako, hyprlock, wlogout, GTK, Qt, fastfetch
-
-Manual:
+Manual apply:
 ```bash
 ~/.config/hypr/scripts/apply-theme.sh
 ```
 
 ---
 
-## Zerochan wallpaper script
+## Zerochan wallpaper (`Super + R`)
 
-`Super + R` fetches a random wallpaper from Zerochan.
-
-- **Games filter:** Genshin Impact, ZZZ, Honkai: Star Rail, Arknights, Arknights: Endfield, Neverness to Everness
-- **Criteria:** 16:9 or 16:10 · ≥2 MB · uploaded after July 2025
-- Applies wallpaper and regenerates color scheme automatically
+Fetches a random wallpaper matching anime game art (Genshin, ZZZ, HSR, Arknights, etc). Filters: 16:9 or 16:10 · ≥2 MB · uploaded after July 2025. Applies wallpaper and regenerates color scheme automatically.
 
 ---
 
@@ -210,31 +216,21 @@ Manual:
 ```
 dotfiles/
 ├── install.sh
-├── README.md
+├── update.sh
+├── uninstall.sh
 ├── config/
+│   ├── vibedots/
+│   │   ├── shell.json      central appearance config
+│   │   └── apply.sh        applies shell.json to Waybar + Hyprland
 │   ├── hypr/
 │   │   ├── hyprland.conf
 │   │   ├── hyprlock.conf
 │   │   ├── conf/           autostart, binds, env, input, look, rules
-│   │   └── scripts/        apply-theme.sh, gen-kitty-colors.py
-│   ├── quickshell/
-│   │   ├── shell.qml           entry point (ShellRoot)
-│   │   ├── Config.qml          singleton — settings, colors, state, processes
-│   │   ├── Bar.qml             bar PanelWindow
-│   │   ├── HorizontalContent.qml  horizontal bar layout (workspaces, pills)
-│   │   ├── VerticalContent.qml    vertical bar layout (left/right position)
-│   │   ├── ClockOverlay.qml    centered clock pill (horizontal)
-│   │   ├── Pill.qml            reusable status pill component
-│   │   ├── Settings.qml        bar settings popup (Super+S)
-│   │   ├── WifiPopup.qml       Wi-Fi network list popup
-│   │   ├── BluetoothPopup.qml  Bluetooth device list popup
-│   │   ├── PlayerPopup.qml     media player popup
-│   │   ├── OsdPopup.qml        volume / brightness OSD
-│   │   ├── CornerCap.qml       outer rounded corner caps
-│   │   ├── BarCorner.qml       quarter-circle shape component
-│   │   ├── BatteryTooltip.qml  battery hover tooltip
-│   │   ├── VerticalTooltip.qml icon hover tooltip (vertical bar)
-│   │   └── icons/              Fluent SVG icons
+│   │   └── scripts/        apply-theme.sh, hyprlock-media.sh, toggle-bar.sh
+│   ├── waybar/
+│   │   ├── config.jsonc
+│   │   ├── style.css
+│   │   └── colors.css      generated by matugen
 │   ├── matugen/
 │   │   ├── config.toml
 │   │   └── templates/      per-app color templates

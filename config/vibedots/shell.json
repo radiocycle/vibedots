@@ -1,0 +1,11 @@
+{
+  "bar": {
+    "opacity": 0.85,
+    "height": 44,
+    "pills": true
+  },
+  "hyprland": {
+    "window_opacity": 0.92,
+    "window_rounding": 24
+  }
+}

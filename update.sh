@@ -150,14 +150,6 @@ if pgrep -x Hyprland &>/dev/null || pgrep -x hyprland &>/dev/null; then
     fi
 fi
 
-if pgrep -x qs &>/dev/null; then
-    if ask "Restart Quickshell bar?" "y"; then
-        pkill -x qs; sleep 0.5
-        QML_XHR_ALLOW_FILE_READ=1 qs --daemonize &>/dev/null
-        success "Quickshell restarted"
-    fi
-fi
-
 if pgrep -x waybar &>/dev/null; then
     if ask "Restart Waybar?" "y"; then
         pkill -x waybar; sleep 0.3

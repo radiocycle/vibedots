@@ -1,11 +1,15 @@
 {
   "bar": {
-    "opacity": 0.85,
+    "opacity": 0.86,
     "height": 44,
     "pills": true
   },
   "hyprland": {
-    "window_opacity": 0.92,
-    "window_rounding": 24
+    "window_opacity": 0.86,
+    "window_rounding": 24,
+    "blur": true,
+    "blur_size": 8,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2
   }
 }

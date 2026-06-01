@@ -1,0 +1,13 @@
+/* vibedots-override.css — сгенерировано apply.sh */
+
+window#waybar {
+    background-color: rgba(18,20,14, 0.86);
+}
+
+/* Pills включены — скрыть сепараторы */
+#custom-sep {
+    font-size: 0px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+}

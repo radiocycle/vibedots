@@ -7,6 +7,7 @@
 
     "modules-left": [
         "hyprland/workspaces",
+        "custom/sep",
         "hyprland/window"
     ],
     "modules-center": [
@@ -14,14 +15,24 @@
     ],
     "modules-right": [
         "custom/playerctl",
+        "custom/sep",
         "pulseaudio",
         "backlight",
         "battery",
+        "custom/sep",
         "network",
+        "custom/sep",
         "power-profiles-daemon",
-        "hyprland/language",
-        "tray"
+        "custom/sep",
+        "tray",
+        "custom/sep",
+        "hyprland/language"
     ],
+
+    "custom/sep": {
+        "format": "│",
+        "tooltip": false
+    },
 
     "hyprland/workspaces": {
         "format": "{id}",

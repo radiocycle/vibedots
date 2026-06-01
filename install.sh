@@ -17,11 +17,8 @@ dim()     { echo -e "${DIM}     $*${NC}"; }
 
 # ── Parse args ────────────────────────────────────────────────────
 AUTO=false
-DEFAULT_BAR="qs"   # qs | waybar
 for arg in "$@"; do
     [[ "$arg" == "--auto" ]]       && AUTO=true
-    [[ "$arg" == "--bar=waybar" ]] && DEFAULT_BAR="waybar"
-    [[ "$arg" == "--bar=qs" ]]     && DEFAULT_BAR="qs"
 done
 
 # ── Helpers ───────────────────────────────────────────────────────
@@ -78,19 +75,6 @@ fi
 
 $AUTO && info "Running in ${BOLD}automatic${NC} mode" || info "Running in ${BOLD}interactive${NC} mode"
 
-# Bar choice (both will be installed; this sets the default on first login)
-if ! $AUTO; then
-    echo
-    echo -e "  ${BOLD}Default bar:${NC}"
-    echo -e "   ${CYAN}1${NC}) Quickshell   — native QML, Material You colors, WiFi/BT popups ${BOLD}(recommended)${NC}"
-    echo -e "   ${CYAN}2${NC}) Waybar       — classic, widely supported"
-    echo -e "   ${DIM}   Both will be installed. Toggle at any time with Super+Shift+B${NC}"
-    echo -en "\n  Choice [1/2, default=1]: "
-    read -r bar_choice
-    [[ "$bar_choice" == "2" ]] && DEFAULT_BAR="waybar"
-    echo
-fi
-info "Default bar: ${BOLD}$DEFAULT_BAR${NC} (toggle with Super+Shift+B)"
 
 # ── Pre-flight checks ─────────────────────────────────────────────
 header "Pre-flight checks"
@@ -130,7 +114,7 @@ step 1 $TOTAL_STEPS "Backup existing configs"
 BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d-%H%M%S)"
 
 CONFIGS_TO_BACKUP=(
-    hypr quickshell foot fuzzel mako waypaper wlogout
+    hypr foot fuzzel mako waypaper wlogout
     fastfetch matugen starship.toml
 )
 
@@ -215,7 +199,7 @@ PKGS_PACMAN=(
     polkit-gnome gnome-keyring seahorse
 
     # Themes, icons, fonts
-    adw-gtk3 papirus-icon-theme kvantum kvantum-qt5
+    adw-gtk3 papirus-icon-theme
     qt6ct qt5ct breeze breeze5
     ttf-jetbrains-mono-nerd noto-fonts noto-fonts-emoji
 
@@ -247,7 +231,6 @@ PKGS_AUR=(
     awww
     waypaper
     matugen
-    quickshell
     zen-browser-bin
     spotify
     spicetify-cli
@@ -423,27 +406,7 @@ if [[ -d "$DOTS_DIR/config/spicetify-theme" ]] && command -v spicetify &>/dev/nu
     fi
 fi
 
-# ── Set default bar in autostart ─────────────────────────────────
-AUTOSTART="$HOME/.config/hypr/conf/autostart.conf"
-if [[ -f "$AUTOSTART" ]]; then
-    if [[ "$DEFAULT_BAR" == "waybar" ]]; then
-        # Enable waybar, disable qs
-        sed -i 's|^exec-once = QML_XHR_ALLOW_FILE_READ=1 qs --daemonize|# exec-once = QML_XHR_ALLOW_FILE_READ=1 qs --daemonize|' "$AUTOSTART"
-        sed -i 's|^# exec-once = waybar.*|exec-once = waybar|' "$AUTOSTART"
-        # Make sure waybar line exists
-        grep -q "^exec-once = waybar" "$AUTOSTART" || \
-            sed -i '/exec-once = \/usr\/lib\/polkit/a exec-once = waybar' "$AUTOSTART"
-        success "Default bar set to waybar"
-    else
-        # Enable qs, disable waybar
-        sed -i 's|^exec-once = waybar|# exec-once = waybar (replaced by qs)|' "$AUTOSTART"
-        sed -i 's|^# exec-once = QML_XHR_ALLOW_FILE_READ=1 qs.*|exec-once = QML_XHR_ALLOW_FILE_READ=1 qs --daemonize|' "$AUTOSTART"
-        grep -q "exec-once = QML_XHR_ALLOW_FILE_READ" "$AUTOSTART" || \
-            echo "exec-once = QML_XHR_ALLOW_FILE_READ=1 qs --daemonize" >> "$AUTOSTART"
-        success "Default bar set to quickshell"
     fi
-    info "Toggle at any time with Super+Shift+B"
-fi
 
 # ── Summary ───────────────────────────────────────────────────────
 echo
@@ -463,7 +426,6 @@ if $DO_BACKUP && [[ -d "$BACKUP_DIR" ]]; then
 fi
 echo -e "  ${BOLD}Key configs:${NC}"
 printf "   ${DIM}%-28s${NC} %s\n" "~/.config/hypr/"         "Hyprland (keybinds, rules, scripts)"
-printf "   ${DIM}%-28s${NC} %s\n" "~/.config/quickshell/"   "Bar (shell.qml, WifiPopup, BluetoothPopup)"
 printf "   ${DIM}%-28s${NC} %s\n" "~/.config/foot/"          "Terminal"
 printf "   ${DIM}%-28s${NC} %s\n" "~/.config/fuzzel/"        "App launcher"
 printf "   ${DIM}%-28s${NC} %s\n" "~/.config/mako/"          "Notifications"

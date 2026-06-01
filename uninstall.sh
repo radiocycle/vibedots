@@ -52,7 +52,7 @@ DOTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # ── 1. Stop running bar processes ─────────────────────────────────
 header "Stop bar processes"
 
-for proc in qs waybar; do
+for proc in waybar; do
     if pgrep -x "$proc" &>/dev/null; then
         if ask "Kill running $proc?" "y"; then
             pkill -x "$proc" && success "Killed $proc" || warn "Could not kill $proc"
@@ -66,8 +66,8 @@ done
 header "Remove deployed configs"
 
 CONFIGS=(
-    hypr quickshell foot fuzzel mako waypaper wlogout
-    fastfetch matugen waybar Kvantum gtk-3.0 gtk-4.0 qtengine spicetify
+    hypr foot fuzzel mako waypaper wlogout
+    fastfetch matugen waybar gtk-3.0 gtk-4.0 qtengine spicetify
 )
 
 if ask "Remove dotfile configs from ~/.config/?" "y"; then
@@ -127,5 +127,5 @@ echo -e "${BOLD}${GREEN}━━━━━━━━━━━━━━━━━━�
 echo
 [[ -n "$LATEST_BACKUP" ]] && echo -e "  ${BOLD}Backup:${NC} $LATEST_BACKUP" && echo
 echo -e "  ${DIM}Packages were not removed. To remove manually:${NC}"
-echo -e "  ${DIM}yay -Rns hyprland quickshell waybar foot fuzzel mako matugen wlogout${NC}"
+echo -e "  ${DIM}yay -Rns hyprland waybar foot fuzzel mako matugen wlogout${NC}"
 echo

@@ -120,6 +120,3 @@ python3 $HOME/.config/hypr/scripts/update-lock-theme.py
 makoctl reload        2>/dev/null
 hyprctl reload        2>/dev/null
 pkill -SIGUSR2 waybar 2>/dev/null
-# Reload quickshell with new colors
-pkill -x qs 2>/dev/null; sleep 0.3
-QML_XHR_ALLOW_FILE_READ=1 qs --daemonize 2>/dev/null
